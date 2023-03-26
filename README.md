@@ -120,7 +120,7 @@ I wanted to explore the CPU table to find the best CPU in the data set
 | Core i9-13900F  | 32        | 5600           | 10          |
 | Ryzen 9 7900X3D | 24        | 5600           | 5           |
 
-I found that the "Core i9-13900KS" was the best in the CPU table; so my next step was writing a query to search for any laptops with the top CPU but it didnt return anything so I decided not to include it. This is when I realized that the CPU and GPU tables contain mostly desktop products so I looked up the specs of both returns in CPU/GPU queries to CPUs/GPUs in the Laptop Data table
+I found that the "Core i9-13900KS" was the best in the CPU table; so my next step was writing a query to search for any laptops with the top CPU but it didnt return anything so I decided not to include it. 
 
 ```
 SELECT
@@ -136,7 +136,7 @@ ORDER BY
 LIMIT 
     10;
 ```
-GPU in the "Gaming" type laptop with the most Storage
+I wanted to find the GPUs in the "Gaming" type laptop with the most Storage
 
 | LaptopID | GPU                        | Storage(GB) |
 |:--------:|:--------------------------:|:-----------:|
@@ -150,3 +150,66 @@ GPU in the "Gaming" type laptop with the most Storage
 | 163      | Nvidia GeForce GTX 980M    | 512         |
 | 190      | Nvidia GeForce GTX 1080    | 512         |
 | 874      | Nvidia GeForce GTX 960     | 512         |
+
+Nvidia (Like most companies in tech) usually get better performance the higher the number; but in some cases a lower "ti" can be more powerful than a higher number so I decided to make sure the "1080" was better than the "1050 Ti"
+
+```
+SELECT
+    *
+FROM
+    laptops.gpu_specs
+WHERE
+    GPU LIKE '%Nvidia GeForce GTX 1080'
+    OR 
+    GPU LIKE '%Nvidia GeForce GTX 1050 Ti';
+```
+
+| GPU                        | Year_Released | Memory(MB) | Memory_bus(BIT) | Memory_Clock(MHz) | BUS          | Memory_Type | Chip  |
+|:--------------------------:|:-------------:|:----------:|:---------------:|:-----------------:|:------------:|:-----------:|:-----:|
+| NVIDIA GeForce GTX 1050 Ti | 2016          | 4000       | 128             | 1752              | PCIe 3.0 x16 | GDDR5       | GP107 |
+| NVIDIA GeForce GTX 1080    | 2016          | 8000       | 256             | 1251              | PCIe 3.0 x16 | GDDR5X      | GP104 |
+
+The "1080" has much better specs according to the table 
+
+I wondered What percent of games can you play in the "Videogame_Requirements" table with a "Nvidia GeForce GTX 1080" GPU on the min settings.
+
+```
+SELECT
+    Count(Name)/119*100
+FROM
+    laptops.Videogame_Requirements
+WHERE
+    `Min_GPU_Memory(MB)` < 8000
+    AND
+    `Min_GPU_Memory_Clock(Mhz)` < 1251;
+```
+
+It returned, 70% (ROUNDED from 69.7479)
+(119 Games in table, divided returned value by total games then multiplied by 100 to get a percent)
+(The values in the WHERE clause where pulled from the "1080"s specs on the GPU table)
+
+This is when I realized that the CPU and GPU tables contain mostly desktop products so I looked up the specs of both returns in CPU/GPU queries to CPUs/GPUs in the Laptop Data table
+
+Best CPU in a laptop with a "Nvidia GeForce GTX 1080" (The best GPU in the Laptop_Data Table)
+
+```
+SELECT
+    CPU
+FROM
+    laptops.laptop_data
+WHERE
+    GPU LIKE '%Nvidia GeForce GTX 1080'
+GROUP BY
+    CPU;
+```
+"Core i7 7820HK" and "Core i7 6820HK"
+
+I Compared both chips Specs on [Intels Website](https://www.intel.com/content/www/us/en/products/compare.html?productIds=97464,88969) to any chip in the CPU table that has "Core i7" in the name to get the closest refrence to cross analyze with the Video Game Requirments Table
+
+
+
+
+
+
+
+
