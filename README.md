@@ -4,6 +4,8 @@ I sought out data on laptops and their main performance components because I was
 ### [Repsoitory](https://github.com/calebpool96/Laptop-Dataset-Portfolio-)
 Contains all files involved in the project
 
+## Collect:
+
 ### Gathered Data From Kaggle
 Laptop Data, GPU Specs, CPU Specs, & Video Game Requirements
 
@@ -16,6 +18,8 @@ Laptop Data, GPU Specs, CPU Specs, & Video Game Requirements
 [CPU Specs](https://www.kaggle.com/datasets/baraazaid/cpu-and-gpu-stats)
 
 [Video Game Requirements](https://www.kaggle.com/datasets/baraazaid/pc-video-game-requirements-v2)
+
+## Clean:
 
 ### Cleaned Tables in Google Sheets
 
@@ -54,3 +58,95 @@ After I cleaned up the columns I created an Entity Relationship Diagram by hand 
 
 <img src="https://user-images.githubusercontent.com/126192331/227752084-f903caf4-ad03-4bbd-aca6-08125d97d6ea.png" width="450" height="450">
 
+## Analyze:
+
+### MySQL
+Made a local MySql server then linked it to PopSQL then uploaded the cleaned tables using MySQL Workbench then wrote queries to explore the dataset
+
+```
+SELECT 
+    Resolution,
+    Screen
+FROM 
+    laptops.laptop_data
+ORDER BY 
+    Resolution DESC
+LIMIT
+  10;
+  
+```
+I started by looking for the best screen found in the dataset (The higher the resolution the better)
+
+| Resolution | Screen                              |
+|:----------:|:-----------------------------------:|
+| 3840x2160  | IPS Panel 4K Ultra HD / Touchscreen |
+| 3840x2160  | 4K Ultra HD / Touchscreen           |
+| 3840x2160  | IPS Panel 4K Ultra HD               | 
+| 3840x2160  | IPS Panel 4K Ultra HD               |
+| 3840x2160  | IPS Panel Touchscreen / 4K Ultra HD |
+| 3840x2160  | IPS Panel 4K Ultra HD               |
+| 3840x2160  | IPS Panel 4K Ultra HD / Touchscreen |
+| 3840x2160  | IPS Panel 4K Ultra HD / Touchscreen |
+| 3840x2160  | 4K Ultra HD / Touchscreen           |
+| 3840x2160  | 4K Ultra HD                         |
+
+After a [Google Search](https://www.google.com) If IPS Panel is a good screen and the [top result](https://www.benq.com/en-us/knowledge-center/knowledge/how-to-choose-between-tn-va-and-ips-panels-for-the-games-you-play.html) States "IPS: the Finest Colors and Viewing Angles, Less Speed and Black Level Detail" so the best screen is the "IPS Panel 4K Ultra HD / Touchscreen" and the best resolution is "3840x2160"
+
+```
+SELECT
+    CPU,
+    Max_Cores,
+    `Max_Clock(Mhz)`,
+    `Process(NM)`
+FROM
+    laptops.cpu_specs
+ORDER BY
+    `Max_Clock(MHz)` DESC
+LIMIT
+    10;
+```
+I wanted to explore the CPU table to find the best CPU in the data set
+
+| CPU             | Max_Cores | Max_Clock(Mhz) | Process(NM) |
+|:---------------:|:---------:|:--------------:|:-----------:|
+| Core i9-13900KS | 32        | 6000           | 10          |
+| Core i9-13900KF | 32        | 5800           | 10          |
+| Core i9-13900K  | 32        | 5800           | 10          |
+| Ryzen 9 7950X3D | 32        | 5700           | 5           |
+| Ryzen 9 7950X   | 32        | 5700           | 5           |
+| Core i9-13980HX | 32        | 5600           | 10          |
+| Ryzen 9 7900X   | 24        | 5600           | 5           |
+| Core i9-13900   | 32        | 5600           | 10          |
+| Core i9-13900F  | 32        | 5600           | 10          |
+| Ryzen 9 7900X3D | 24        | 5600           | 5           |
+
+I found that the "Core i9-13900KS" was the best in the CPU table; so my next step was writing a query to search for any laptops with the top CPU but it didnt return anything so I decided not to include it. This is when I realized that the CPU and GPU tables contain mostly desktop products so I looked up the specs of both returns in CPU/GPU queries to CPUs/GPUs in the Laptop Data table
+
+```
+SELECT
+    LaptopID,
+    GPU,
+    `Storage(GB)`
+FROM
+    laptops.laptop_data
+WHERE 
+    Type LIKE '%Gaming%'
+ORDER BY 
+    `Storage(GB)` DESC
+LIMIT 
+    10;
+```
+GPU in the "Gaming" type laptop with the most Storage
+
+| LaptopID | GPU                        | Storage(GB) |
+|:--------:|:--------------------------:|:-----------:|
+| 1205     | Nvidia GeForce GTX 1080    | 512         |
+| 389      | Nvidia GeForce GTX 1050 Ti | 512         |
+| 539      | Nvidia GeForce GTX 1050    | 512         |
+| 897      | Nvidia GeForce GTX 1050 Ti | 512         |
+| 1108     | Nvidia GeForce GTX 1060    | 512         |
+| 1207     | Nvidia GeForce GTX 1060    | 512         |
+| 205      | Nvidia GeForce GTX 1080    | 512         |
+| 163      | Nvidia GeForce GTX 980M    | 512         |
+| 190      | Nvidia GeForce GTX 1080    | 512         |
+| 874      | Nvidia GeForce GTX 960     | 512         |
