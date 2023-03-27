@@ -204,7 +204,36 @@ GROUP BY
 ```
 "Core i7 7820HK" and "Core i7 6820HK"
 
-I Compared both chips Specs on [Intels Website](https://www.intel.com/content/www/us/en/products/compare.html?productIds=97464,88969) to any chip in the CPU table that has "Core i7" in the name to get the closest refrence to cross analyze with the Video Game Requirments Table
+I Compared both chips Specs on [Intels Website](https://www.intel.com/content/www/us/en/products/compare.html?productIds=97464,88969) and downloaded the table from the page then cleaned it in sheets, added it to the MySql database, and inserted the data into the cpu specs table.
+
+```
+INSERT INTO laptops.CPU_Specs
+    (CPU, 
+    Codename, 
+    Min_Cores, 
+    Max_Cores, 
+    `Min_Clock(MHz)`,
+    `Max_Clock(MHz)`, 
+    Socket, 
+    `Process(NM)`, 
+    `TDP(Watts)`, 
+    `Release`)
+SELECT
+    Processor_Number,
+    Codename,
+    Total_Cores,
+    `Total_Threads(Max_Cores)`,
+    `Processor_Base_Frequency(Clock_MHz)`,
+    `Max_Turbo_Frequency(Max_Clock_MHz)`,
+    Sockets_Suported,
+    `Lithography(NM)`,
+    `TDP(Watts)`,
+    Launch_Date 
+FROM
+    laptops.cleaned_intel_comparison;
+```
+
+
 
 
 
