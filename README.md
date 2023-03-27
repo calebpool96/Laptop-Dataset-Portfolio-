@@ -232,6 +232,150 @@ SELECT
 FROM
     laptops.cleaned_intel_comparison;
 ```
+What percent of games can the "i7-7820HK" Play?
+
+```
+SELECT
+    Count(Name)/119*100
+FROM
+    laptops.Videogame_Requirements
+WHERE
+    Min_CPU_Cores <= 4
+    AND
+    Min_CPU_TDP <= 45;
+```
+0.9% (Rounded from 0.8403)
+
+The TDP in this cpu is too low for 99.1% of games according to the video game requirments table.
+According to [Ace Cloud Hosting](https://www.acecloudhosting.com/blog/what-is-tdp-for-cpus-and-gpus/) "For a CPU, TDP is a measure of the maximum amount of heat that a CPU can generate and still perform within its specified temperature range." so I it is important to the laptop.
+I want to find a CPU that can run atleast 50% of the games in the video game requirments table.
+
+What are the Best CPUs in "Gaming" Type Laptops
+
+```
+SELECT  
+    CPU,
+    LaptopID
+FROM
+    laptops.laptop_data
+WHERE 
+    Type LIKE '%Gaming%'
+ORDER BY  
+    CPU DESC;
+```
+"Ryzen 1700", "FX 9830", 'Core i7 7820HK"
+
+So I added these to a [benchmark](https://www.cpubenchmark.net/compare/2970vs2911vs2938/AMD-Ryzen-7-1700-vs-AMD-FX-9830P-vs-Intel-i7-7820HK) to see what was the best out of the 3 CPU and the "Ryzen 1700" Had the best mark but it did not exist in the CPU table so I added it in SQL by hand
+
+```
+INSERT INTO 
+    laptops.cpu_specs (
+        CPU, 
+        Codename, 
+        Min_Cores,
+        Max_Cores, 
+        `Min_Clock(MHz)`,
+        `Max_Clock(MHz)`,
+        Socket,
+        `Process(NM)`,
+        `TDP(Watts)`,
+        `Release` 
+)
+VALUES(
+    'Ryzen 7 1700',
+    'Zen',
+    '8',
+    '16',
+    '3000',
+    '3700',
+    'AM4',
+    '14',
+    '65',
+    'Mar 2nd, 2017'
+);
+```
+
+What "LaptopIDs" are "Gaming" type laptops and have an "Ryzen 1700" CPU and what their GPU(s)/RAM(GB)?
+```
+SELECT
+    LaptopID,
+    GPU,
+    `RAM(GB)`
+FROM
+    laptops.laptop_data
+WHERE
+    CPU LIKE '%Ryzen 170%';
+```
+
+| LaptopID | GPU               | RAM(GB) |
+|:--------:|:-----------------:|:-------:|
+| 242      | AMD Radeon RX 580 | 16      |
+| 226      | AMD Radeon RX 580 | 16      |
+| 276      | AMD Radeon RX 580 | 8       |
+
+Then I verified that the "AMD Radeon RX 580" exist in the GPU table
+
+What percent of games can the "242" and "226" Laptops play
+
+```
+SELECT 
+    COUNT(Name)/119*100
+FROM
+    laptops.videogame_requirements
+WHERE
+    Min_CPU_Cores <= (
+        SELECT
+            Max_Cores 
+        FROM 
+            laptops.cpu_specs
+        WHERE
+            CPU LIKE '%Ryzen 7 1700'
+    ) AND
+    Min_CPU_TDP <= (
+        SELECT
+            `TDP(Watts)` 
+        FROM 
+            laptops.cpu_specs
+        WHERE
+            CPU LIKE '%Ryzen 7 1700'
+    ) AND   
+    `Min_GPU_Memory(MB)` <= (
+        SELECT 
+            `Memory(MB)`
+        FROM   
+            laptops.gpu_specs
+        WHERE
+            GPU LIKE '%AMD Radeon RX 580'
+     ) AND 
+     `Min_GPU_Memory_Clock(Mhz)` <= (
+        SELECT 
+            `Memory_Clock(MHz)`
+        FROM   
+            laptops.gpu_specs
+        WHERE
+            GPU LIKE '%AMD Radeon RX 580'
+     ) AND  
+     `Min_RAM(GB)` <= 16;
+ ```
+ 
+ 51% (Rounded from 51.2605)
+ This reaches my Goal from earlier so we'll look at the other features of the laptops
+ 
+| LaptopID | Company | Type   | Inches | Screen            | Resolution | CPU       | Ram(GB) | Storage(GB) | Gpu               | OS         |
+|:--------:|:-------:|:------:|:------:|:-----------------:|:----------:|:---------:|:-------:|:-----------:|:-----------------:|:----------:|
+| 242      | Asus    | Gaming | 17.3   | Full HD           | 1920x1080  | Ryzen 170 | 16      | 1,256       | AMD Radeon RX 580 | Windows 10 |
+| 226      | Asus    | Gaming | 17.3   | IPS Panel Full HD | 1920x1080  | Ryzen 170 | 16      | 1,256       | AMD Radeon RX 580 | Windows 10 |
+
+Between the two laptops the "226" has the better screen so that is the laptop I will be considering buying
+
+
+
+
+
+
+
+
+
 
 
 
