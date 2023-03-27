@@ -373,7 +373,11 @@ WHERE
 
 Between the two laptops the "226" has the better screen so that is the laptop I will be considering buying
 
+## Share:
 
+### [(Google Slides)](https://github.com/calebpool96/Laptop-Dataset-Portfolio-/blob/main/Presentation.pdf)
+
+I put together a slideshow to highlight key insights and share with others
 
 
 
