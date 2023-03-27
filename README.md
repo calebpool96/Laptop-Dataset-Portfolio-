@@ -60,6 +60,11 @@ After I cleaned up the columns I created an Entity Relationship Diagram by hand 
 
 ## Analyze:
 
+Started in PowerBI 
+
+### PowerBI
+[(Link to PowerBI report)](https://github.com/calebpool96/Laptop-Dataset-Portfolio-/blob/main/Laptop%20data%20POWER%20BI.pbix)
+
 ### MySQL
 Made a local MySql server then linked it to PopSQL then uploaded the cleaned tables using MySQL Workbench then wrote queries to explore the dataset
 
