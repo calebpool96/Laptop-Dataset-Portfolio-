@@ -379,7 +379,7 @@ Between the two laptops the "226" has the better screen so that is the laptop I 
 
 I put together a slideshow to highlight key insights and share with others
 
-
+## [15 ways I can improve](https://github.com/calebpool96/Laptop-Dataset-Portfolio-/blob/main/15%20Things%20I%20want%20to%20focus%20on%20next%20project.docx)
 
 
 
