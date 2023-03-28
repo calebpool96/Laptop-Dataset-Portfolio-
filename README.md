@@ -381,6 +381,7 @@ I put together a slideshow to highlight key insights and share with others.
 
 ## [15 ways I can improve](https://github.com/calebpool96/Laptop-Dataset-Portfolio-/blob/main/15%20Things%20I%20want%20to%20focus%20on%20next%20project.pdf)
 
+## [Source Page](https://github.com/calebpool96/Laptop-Dataset-Portfolio-/blob/main/Gaming%20Laptop%20Database%20Source%20Page.pdf)
 
 
 
